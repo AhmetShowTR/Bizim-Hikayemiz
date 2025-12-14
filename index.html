@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bizim Hikayemiz</title>
+
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/script.js" defer></script>
+</head>
+<body>
+
+<div class="stars"></div>
+<canvas id="confetti"></canvas>
+
+<!-- GİRİŞ -->
+<div id="login" class="screen" style="background-image:url('images/giris-bg.jpg')">
+  <div class="card">
+    <input type="password" id="password" placeholder="Şifre">
+    <button onclick="checkPassword()">Giriş Yap</button>
+    <p id="error" style="color:#2563eb;"></p>
+  </div>
+</div>
+
+<!-- MEKTUP -->
+<div id="letter" class="screen hidden">
+  <audio id="music" src="music/sarki.mp3"></audio>
+  <div class="letter-box">
+    <p id="letterText"></p>
+
+    <div id="afterLetter" class="hidden">
+      <div class="heart"></div>
+      <div class="love-text">Seni seviyorum</div>
+    </div>
+
+    <button onclick="closeLetter()">Mektubu Kapat</button>
+  </div>
+</div>
+
+<!-- GALERİ -->
+<div id="gallery" class="screen hidden" style="background-image:url('images/galeri-bg.jpg')">
+  <div class="grid">
+    <script>
+      for(let i=1;i<=19;i++){
+        document.write(`<img src="images/photo${i}.jpg" onclick="openLightbox(this)">`);
+      }
+    </script>
+  </div>
+</div>
+
+<div id="lightbox" class="hidden" onclick="closeLightbox()">
+  <img id="lightbox-img">
+</div>
+
+</body>
+</html>
