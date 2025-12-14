@@ -40,7 +40,7 @@ function typeLetter() {
 
 function closeLetter() {
   letter.classList.add("hidden");
-  gallery.classList.remove("hidden");
+  gallery.classList.remove("hidden"); // Galeriyi sadece şifre doğru girildikten sonra göster
 }
 
 /* GALERİ */
