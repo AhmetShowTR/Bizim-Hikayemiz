@@ -1,19 +1,34 @@
 const PASSWORD = "AAG";
 
-/* GİRİŞ */
+// Şifreyi kontrol et
 function checkPassword() {
-  if (password.value === PASSWORD) {
-    login.classList.add("hidden");
-    letter.classList.remove("hidden");
+  const passwordField = document.getElementById("password");
+  const error = document.getElementById("error");
+
+  // Şifre doğruysa
+  if (passwordField.value === PASSWORD) {
+    // Giriş ekranını gizle
+    document.getElementById("login").classList.add("hidden");
+
+    // Mektup ekranını göster
+    document.getElementById("letter").classList.remove("hidden");
+
+    // Müzik çalmaya başla
+    const music = document.getElementById("music");
     music.play();
+
+    // Konfeti başlat
     startConfetti();
+
+    // Mektup yazısını başlat
     typeLetter();
   } else {
+    // Hata mesajı göster
     error.innerText = "Şifre yanlış ama olsun… Kalbime biraz daha yaklaştın 💙";
   }
 }
 
-/* MEKTUP */
+// Mektup yazısı
 const letterContent = `Aramızda tam 875 kilometre var…
 Ama kalbimde sana olan mesafe hiç değişmiyor.
 
@@ -30,71 +45,77 @@ sevgiyle bekliyorum.
 let index = 0;
 function typeLetter() {
   if (index < letterContent.length) {
-    letterText.innerHTML += letterContent.charAt(index);
+    document.getElementById("letterText").innerHTML += letterContent.charAt(index);
     index++;
     setTimeout(typeLetter, 35);
   } else {
-    afterLetter.classList.remove("hidden");
+    // Mektup bitince kalp animasyonunu başlat
+    document.getElementById("afterLetter").classList.remove("hidden");
   }
 }
 
 function closeLetter() {
-  letter.classList.add("hidden");
-  gallery.classList.remove("hidden"); // Galeriyi sadece şifre doğru girildikten sonra göster
+  // Mektubu kapat
+  document.getElementById("letter").classList.add("hidden");
+  document.getElementById("gallery").classList.remove("hidden"); // Fotoğraf albümünü göster
+  loadGallery(); // Fotoğrafları yükle
 }
 
-/* GALERİ */
+// Fotoğraf galerisini yükle
+function loadGallery() {
+  const gallery = document.getElementById("gallery").getElementsByClassName("grid")[0];
+  for (let i = 1; i <= 19; i++) {
+    const img = document.createElement("img");
+    img.src = `images/photo${i}.jpg`;
+    img.onclick = () => openLightbox(img);
+    gallery.appendChild(img);
+  }
+}
+
 function openLightbox(img) {
-  lightbox.classList.remove("hidden");
+  document.getElementById("lightbox").classList.remove("hidden");
   document.getElementById("lightbox-img").src = img.src;
 }
+
 function closeLightbox() {
-  lightbox.classList.add("hidden");
+  document.getElementById("lightbox").classList.add("hidden");
 }
 
-/* KAYDIRINCA ANİMASYON */
-const observer = new IntersectionObserver(entries=>{
-  entries.forEach(e=>e.isIntersecting && e.target.classList.add("show"));
-},{threshold:0.2});
-
-setTimeout(()=>{
-  document.querySelectorAll(".grid img").forEach(img=>observer.observe(img));
-},500);
-
-/* 🎉 KALP KONFETİ */
+// Konfeti efekti
 const canvas = document.getElementById("confetti");
 const ctx = canvas.getContext("2d");
-canvas.width = innerWidth;
-canvas.height = innerHeight;
-let hearts=[];
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-function startConfetti(){
-  hearts=[];
-  for(let i=0;i<80;i++){
+let hearts = [];
+
+function startConfetti() {
+  hearts = [];
+  for (let i = 0; i < 80; i++) {
     hearts.push({
-      x:Math.random()*canvas.width,
-      y:Math.random()*canvas.height-canvas.height,
-      s:Math.random()*12+8,
-      v:Math.random()*3+2
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      size: Math.random() * 12 + 8,
+      speed: Math.random() * 3 + 2
     });
   }
-  animate();
+  animateConfetti();
 }
 
-function drawHeart(x,y,s){
-  ctx.fillStyle="#fff";
+function drawHeart(x, y, size) {
+  ctx.fillStyle = "#fff";
   ctx.beginPath();
-  ctx.moveTo(x,y);
-  ctx.bezierCurveTo(x-s,y-s,x-1.5*s,y+s/2,x,y+s);
-  ctx.bezierCurveTo(x+1.5*s,y+s/2,x+s,y-s,x,y);
+  ctx.moveTo(x, y);
+  ctx.bezierCurveTo(x - size, y - size, x - 1.5 * size, y + size / 2, x, y + size);
+  ctx.bezierCurveTo(x + 1.5 * size, y + size / 2, x + size, y - size, x, y);
   ctx.fill();
 }
 
-function animate(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  hearts.forEach(h=>{
-    drawHeart(h.x,h.y,h.s);
-    h.y+=h.v;
+function animateConfetti() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  hearts.forEach(h => {
+    drawHeart(h.x, h.y, h.size);
+    h.y += h.speed;
   });
-  requestAnimationFrame(animate);
+  requestAnimationFrame(animateConfetti);
 }
