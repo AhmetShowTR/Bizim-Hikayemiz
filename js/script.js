@@ -47,17 +47,25 @@ function typeLetter() {
   if (index < letterContent.length) {
     document.getElementById("letterText").innerHTML += letterContent.charAt(index);
     index++;
-    setTimeout(typeLetter, 35);
+    setTimeout(typeLetter, 35); // Harfler yazılmaya devam eder
   } else {
     // Mektup bitince kalp animasyonunu başlat
     document.getElementById("afterLetter").classList.remove("hidden");
+    setTimeout(() => {
+      // Mektup bittiğinde 2 saniye sonra fotoğraf albümüne geçiş yap
+      closeLetter();
+    }, 2000); // Geçiş için 2 saniye bekleyelim
   }
 }
 
 function closeLetter() {
   // Mektubu kapat
   document.getElementById("letter").classList.add("hidden");
-  document.getElementById("gallery").classList.remove("hidden"); // Fotoğraf albümünü göster
+
+  // Fotoğraf albümünü göster
+  const gallery = document.getElementById("gallery");
+  gallery.classList.remove("hidden");
+
   loadGallery(); // Fotoğrafları yükle
 }
 
